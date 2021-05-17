@@ -10,4 +10,5 @@ C:\Users\rajan\source\repos\ict_towerlight\obj\Debug\ict_towerlight.csproj.CopyC
 C:\Users\rajan\source\repos\ict_towerlight\obj\Debug\ict_towerlight.exe
 C:\Users\rajan\source\repos\ict_towerlight\obj\Debug\ict_towerlight.pdb
 C:\Users\rajan\source\repos\ict_towerlight\obj\Debug\ict_towerlight.ICT_Towerlight.resources
-C:\Users\rajan\source\repos\ict_towerlight\obj\Debug\ict_towerlight.csprojAssemblyReference.cache
+C:\Users\rajan\source\repos\ict_towerlight\bin\Debug\Newtonsoft.Json.dll
+C:\Users\rajan\source\repos\ict_towerlight\bin\Debug\Newtonsoft.Json.xml

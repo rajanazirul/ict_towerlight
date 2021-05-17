@@ -33,12 +33,13 @@ namespace ict_towerlight
 			// 
 			// ICT_Towerlight
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.ClientSize = new System.Drawing.Size(1067, 588);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "ICT_Towerlight";
 			this.Text = "ICT_Towerlight";
-			this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.ResumeLayout(false);
 
