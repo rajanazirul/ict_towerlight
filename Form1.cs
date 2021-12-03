@@ -37,7 +37,11 @@ namespace ict_towerlight
         }
         private void IdleStateOn()
         {
-            var client = new RestClient("http://raspberrypi.local:5000/led/yellow/");
+            XmlDocument doc = new XmlDocument();
+            doc.Load("location.xml");
+            var opt4 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option4").InnerText);
+
+            var client = new RestClient(@opt4 + "/led/yellow/");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AlwaysMultipartFormData = true;
@@ -47,7 +51,11 @@ namespace ict_towerlight
         }
         private void redStateOn()
         {
-            var client = new RestClient("http://raspberrypi.local:5000/led/red/");
+            XmlDocument doc = new XmlDocument();
+            doc.Load("location.xml");
+            var opt4 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option4").InnerText);
+
+            var client = new RestClient(@opt4 + "/led/red/");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AlwaysMultipartFormData = true;
@@ -57,7 +65,11 @@ namespace ict_towerlight
         }
         private void redStateOff()
         {
-            var client = new RestClient("http://raspberrypi.local:5000/led/red/");
+            XmlDocument doc = new XmlDocument();
+            doc.Load("location.xml");
+            var opt4 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option4").InnerText);
+
+            var client = new RestClient(@opt4 + "/led/red/");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AlwaysMultipartFormData = true;
@@ -67,7 +79,11 @@ namespace ict_towerlight
         }
         private void IdleStateOff()
         {
-            var client = new RestClient("http://raspberrypi.local:5000/led/yellow/");
+            XmlDocument doc = new XmlDocument();
+            doc.Load("location.xml");
+            var opt4 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option4").InnerText);
+
+            var client = new RestClient(@opt4 + "/led/yellow/");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AlwaysMultipartFormData = true;
@@ -77,7 +93,11 @@ namespace ict_towerlight
         }
         private void greenStateOn()
         {
-            var client = new RestClient("http://raspberrypi.local:5000/led/green/");
+            XmlDocument doc = new XmlDocument();
+            doc.Load("location.xml");
+            var opt4 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option4").InnerText);
+
+            var client = new RestClient(@opt4 + "/led/green/");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AlwaysMultipartFormData = true;
@@ -87,7 +107,11 @@ namespace ict_towerlight
         }
         private void greenStateOff()
         {
-            var client = new RestClient("http://raspberrypi.local:5000/led/green/");
+            XmlDocument doc = new XmlDocument();
+            doc.Load("location.xml");
+            var opt4 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option4").InnerText);
+
+            var client = new RestClient(@opt4 + "/led/green/");
             client.Timeout = -1;
             var request = new RestRequest(Method.POST);
             request.AlwaysMultipartFormData = true;
@@ -157,29 +181,41 @@ namespace ict_towerlight
             XmlDocument doc = new XmlDocument();
             doc.Load("location.xml");
             var opt1 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option1").InnerText);
-            Ping myPing = new Ping();
+            var opt4 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option4").InnerText);
 
-            var client = new RestClient("http://raspberrypi.local:5000/led/red/");
+            var client = new RestClient(@opt4 + "/led/red/");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            var data = JObject.Parse(response.Content);
-            string redState = data.GetValue("red").ToString();
-            Console.WriteLine(redState);
-
-            PingReply reply = myPing.Send(opt1, 1000);
-            if (reply.Status.ToString() == "Success")
+            string redState = "";
+            if (response.Content != "")
             {
-                Console.WriteLine("Status :  " + reply.Status + " \n Time : " + reply.RoundtripTime.ToString() + " \n Address : " + reply.Address);
-                if (redState == "1") { IdleStateOn(); redStateOff(); GenerateLogUpDown("ON"); }
+                var data = JObject.Parse(response.Content);
+                redState = data.GetValue("red").ToString();
+                Console.WriteLine(redState);
             }
-            else
+            try
             {
-                if (redState == "0") { GenerateLogUpDown("DOWN"); }
-                redStateOn();
-                IdleStateOff();
-                greenStateOff();
-                Console.WriteLine("DOWN");
+                Ping myPing = new Ping();
+                PingReply reply = myPing.Send(opt1, 1000);
+            
+                if (reply.Status.ToString() == "Success")
+                {
+                    Console.WriteLine("Status :  " + reply.Status + " \n Time : " + reply.RoundtripTime.ToString() + " \n Address : " + reply.Address);
+                    if (redState == "1") { IdleStateOn(); redStateOff(); GenerateLogUpDown("ON"); }
+                }
+                else
+                {
+                    if (redState == "0") { GenerateLogUpDown("DOWN"); }
+                    redStateOn();
+                    IdleStateOff();
+                    greenStateOff();
+                    Console.WriteLine("DOWN");
+                }
+            }
+            catch (PingException) 
+            {
+                Console.WriteLine("ada masalah");
             }
         
         }

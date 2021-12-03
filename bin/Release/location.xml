@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Settings>
   <General>
-    <Option1>192.168.1.130</Option1>
-    <Option2>C:\Users\rajan\Desktop\demolog\</Option2>
+    <Option1>172.21.192.1</Option1>
+    <Option2>C:\Users\RajaMuhammadNazirul\Desktop\empayarco\repos\ict_towerlight\bin\Release\</Option2>
     <Option3>1</Option3>
+    <Option4>192.168.0.114</Option4>
   </General>
 </Settings>

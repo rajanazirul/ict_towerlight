@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    },
+    "d886dca0-5556-4125-b6a6-49f57ffa6a2b": {
+      "ProjectGuid": "d886dca0-5556-4125-b6a6-49f57ffa6a2b",
+      "DisplayName": "ict_towerlight",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
