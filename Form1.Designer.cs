@@ -33,7 +33,7 @@ namespace ict_towerlight
 			// 
 			// ICT_Towerlight
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1067, 588);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F);

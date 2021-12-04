@@ -8,6 +8,7 @@ using System.Xml;
 using System.IO;
 using System.Net.NetworkInformation;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 
 namespace ict_towerlight
@@ -19,6 +20,11 @@ namespace ict_towerlight
 			InitializeComponent();
         }
 
+        //static class Standby
+        //{
+        //    public static string IdleIndicator;
+        //}
+
         //Added on February 21 by Raja Nazirul, Add background worker to ping testhead and show status.
         private void backgroundWorker1_DoWork()
         {
@@ -26,14 +32,12 @@ namespace ict_towerlight
             doc.Load("location.xml");
             var opt1 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option1").InnerText);
             var opt2 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option2").InnerText);
-            var opt3 = Convert.ToInt32(doc.SelectSingleNode("Settings/General/Option3").InnerText);
 
             var watcher = new FileSystemWatcher(@opt2);
             watcher.Created += OnCreated;
             watcher.Changed += OnChanged;
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = false;
-
         }
         private void IdleStateOn()
         {
@@ -124,7 +128,6 @@ namespace ict_towerlight
             XmlDocument doc = new XmlDocument();
             doc.Load("location.xml");
             var opt2 = Convert.ToString(doc.SelectSingleNode("Settings/General/Option2").InnerText);
-            var opt3 = Convert.ToInt32(doc.SelectSingleNode("Settings/General/Option3").InnerText);
 
             var directory = new DirectoryInfo(@opt2);
             var myFile = directory.GetFiles().OrderByDescending(f => f.LastWriteTime).First().ToString();
@@ -155,26 +158,32 @@ namespace ict_towerlight
             //Close the file
             sw.Close();
         }
+
+        private CancellationTokenSource cancellationToken;
+
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
             string value = $"Created: {e.FullPath}";
             Console.WriteLine(value);
-            greenStateOn();
-            IdleStateOff();
-            redStateOff();
             Console.WriteLine("Green");
         }
          private void OnChanged(object sender, FileSystemEventArgs e)
         {
+            if (cancellationToken != null )
+            {
+                cancellationToken.Cancel();
+            }
             if (e.ChangeType != WatcherChangeTypes.Changed)
             {
                 return;
             }
             Console.WriteLine("Yellow");
-            IdleStateOn();
-            redStateOff();
-            greenStateOff();
             GenerateLog("RUN");
+            //Standby.IdleIndicator = "IDLE";
+            greenStateOn();
+            IdleStateOff();
+            redStateOff();
+            MachineRun();
         }
         private void DoPing() 
         {
@@ -226,5 +235,27 @@ namespace ict_towerlight
             while (true) { DoPing(); Thread.Sleep(10000); }
         }
 
+		private async void MachineRun()
+		{
+            XmlDocument doc = new XmlDocument();
+            doc.Load("location.xml");
+            var opt3 = Convert.ToInt32(doc.SelectSingleNode("Settings/General/Option3").InnerText);
+            cancellationToken = new CancellationTokenSource();
+            try
+            {
+                    await Task.Delay(opt3, cancellationToken.Token);
+                    IdleStateOn();
+                    redStateOff();
+                    greenStateOff();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    
+                }
+        }
 	}
 }
